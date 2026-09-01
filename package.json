@@ -1,0 +1,20 @@
+{
+  "name": "firelink",
+  "version": "0.1.0",
+  "description": "传火 Firelink · AI 伴侣聊天记录迁移与记忆抢救内核（纯本地运行，零上传零遥测）",
+  "type": "module",
+  "main": "dist/src/adapters/registry.js",
+  "types": "dist/src/adapters/registry.d.ts",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.6.3"
+  }
+}

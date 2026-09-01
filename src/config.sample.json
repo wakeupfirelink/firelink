@@ -1,0 +1,50 @@
+{
+  "$comment": "传火（firelink）L1 清洗配置样例 · SPDX-License-Identifier: MIT · 噪音表/去重/脱敏全部可配置；未提供字段回落代码内置默认值（open/clean.ts DEFAULT_*）。加载：loadCleanConfig('config.sample.json') 或 runLitePipeline({ config: '路径' })。",
+  "noiseRules": [
+    { "type": "contains", "pattern": "钻石余额不足", "label": "platform_bubble" },
+    { "type": "contains", "pattern": "请充值后继续使用", "label": "platform_bubble" },
+    { "type": "contains", "pattern": "消息发送失败", "label": "platform_bubble" },
+    { "type": "contains", "pattern": "对方已下线", "label": "platform_bubble" },
+    { "type": "contains", "pattern": "网络连接已断开", "label": "platform_bubble" },
+    { "type": "contains", "pattern": "签到成功，获得", "label": "platform_bubble" },
+    { "type": "exact", "pattern": "4G", "label": "docx_fragment" },
+    { "type": "exact", "pattern": "5G", "label": "docx_fragment" },
+    { "type": "exact", "pattern": "Wi-Fi", "label": "docx_fragment" },
+    { "type": "exact", "pattern": "正在输入…", "label": "platform_bubble" },
+    { "type": "exact", "pattern": "[系统消息]", "label": "system_notice" },
+    { "type": "regex", "pattern": "^\\d{1,3}$", "flags": "", "label": "docx_fragment" },
+    { "type": "contains", "pattern": "本消息由系统自动发送", "label": "system_notice" }
+  ],
+  "dedup": { "enabled": true, "windowSize": 5, "minSegmentLength": 4 },
+  "stripControlChars": true,
+  "messageBoundary": {
+    "pattern": "([^\\s:：][^\\s:：]{0,19})\\s*[:：]\\s*(\\d{1,2})-(\\d{1,2})\\s+(\\d{1,2}):(\\d{2})(?::(\\d{2}))?\\s+",
+    "flags": "g"
+  },
+  "redactionRules": [
+    {
+      "name": "id_card_18",
+      "pattern": "(?<!\\d)\\d{6}(?:19|20)\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{3}[\\dXx](?!\\d)",
+      "flags": "g",
+      "replacement": "[已脱敏:身份证号]"
+    },
+    {
+      "name": "id_card_15",
+      "pattern": "(?<!\\d)\\d{6}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{3}(?!\\d)",
+      "flags": "g",
+      "replacement": "[已脱敏:身份证号]"
+    },
+    {
+      "name": "phone",
+      "pattern": "(?<!\\d)1[3-9]\\d{9}(?!\\d)",
+      "flags": "g",
+      "replacement": "[已脱敏:手机号]"
+    },
+    {
+      "name": "student_id",
+      "pattern": "(?:学号|学籍号|考号|工号|证件号码?|护照号)\\s*[:：]?\\s*[A-Za-z0-9-]{5,25}",
+      "flags": "g",
+      "replacement": "[已脱敏:证件号]"
+    }
+  ]
+}
